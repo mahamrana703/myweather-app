@@ -6,20 +6,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const weatherCards = document.querySelectorAll(".sub-card");
 
   const apiKey = "363e189a2a5bd54cc42a1b878ba08fea";
-
-  searchBtn.addEventListener("click", async () => {
-    const city = cityInput.value;
+  const defaultCity = "Lahore";
+  cityInput.value = defaultCity;
+  const fetchAndDisplayWeather = async (city) => {
     const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
 
+    /*searchBtn.addEventListener("click", async () => {
+      const city = cityInput.value;
+      const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`;
+  */
     try {
       const currentWeatherResponse = await fetch(currentWeatherUrl);
       const currentWeatherData = await currentWeatherResponse.json();
 
       cityName.textContent = currentWeatherData.name;
       if (detailFields.length) {
-        detailFields[0].textContent = `Temperature: "${currentWeatherData.main.temp}" °C`;
-        detailFields[1].textContent = `Wind Speed: ${currentWeatherData.wind.speed} M/S`;
+        detailFields[0].textContent = `Temp: "${currentWeatherData.main.temp}" °C`;
+        detailFields[1].textContent = `Wind : ${currentWeatherData.wind.speed} M/S`;
         detailFields[2].textContent = `Humidity: ${currentWeatherData.main.humidity} %`;
       }
 
@@ -52,5 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  };
+  fetchAndDisplayWeather(defaultCity);
+
+  searchBtn.addEventListener("click", async () => {
+    const city = cityInput.value;
+
+    fetchAndDisplayWeather(city);
   });
 });
