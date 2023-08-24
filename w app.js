@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const currentWeatherResponse = await fetch(currentWeatherUrl);
       const currentWeatherData = await currentWeatherResponse.json();
 
-      // Check if the API response indicates that the city is not found
       const isCityValid = currentWeatherData.cod !== "404";
 
       cityName.textContent = isCityValid
@@ -51,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ? `Humidity: ${currentWeatherData.main.humidity} %`
           : "Humidity: %";
       }
-      // Clear weather cards if city is invalid
+
       if (!isCityValid) {
         weatherCards.forEach((weatherCard) => {
           weatherCard.querySelector("h3").textContent = "";
@@ -60,10 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
           cardDetailFields[1].textContent = "";
           cardDetailFields[2].textContent = "";
         });
-        return; // Exit the function
+        return;
       }
 
-      // Fetch and display forecast data for valid city
       const forecastResponse = await fetch(forecastUrl);
       const forecastData = await forecastResponse.json();
 
